@@ -52,5 +52,4 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores', 'composables', 'utils', 'plugins/vxe-table/utils'],
   },
-  ssr: false,
 });

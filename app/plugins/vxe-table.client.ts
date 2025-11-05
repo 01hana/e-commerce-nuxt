@@ -9,18 +9,20 @@ import VxeUI from 'vxe-pc-ui';
 import 'vxe-table/lib/style.css';
 import 'vxe-pc-ui/lib/style.css';
 
-import { tableConfig, iconConfig } from './config';
+import { tableConfig, iconConfig } from './vxe-table/config';
 
 export default defineNuxtPlugin(async ({ vueApp }) => {
   vueApp.use(VxeTable);
   vueApp.use(VxeUI);
 
-  VxeTable.formats.add('formatDate', ({ cellValue }) => {
-    if (!cellValue) return '';
+  VxeTable.formats.add('formatDate', {
+    cellFormatMethod({ cellValue }) {
+      if (!cellValue) return '';
 
-    const { formatDate } = useFormat();
+      const { formatDate } = useFormat();
 
-    return formatDate(cellValue);
+      return formatDate(cellValue);
+    },
   });
 
   const nuxtApp = useNuxtApp();

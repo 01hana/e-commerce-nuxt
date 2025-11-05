@@ -16,7 +16,6 @@ class HttpRequest {
     const toast = useAppToast();
 
     const status = error?.response?.status;
-    const statusText = error?.response?.statusText;
     const message = error?.response?._data?.message || error.message;
 
     if (status === 401) {
@@ -25,7 +24,7 @@ class HttpRequest {
       return;
     }
 
-    toast.error(`${status || ''} ${statusText || ''} ${message || '未知錯誤'}`);
+    toast.error(`${status || ''} ${message || '未知錯誤'}`);
   }
 
   public async request<T = any>(
@@ -50,8 +49,8 @@ class HttpRequest {
     try {
       return await $fetch<T>(url, requestOptions);
     } catch (error: any) {
+      console.log('error', error);
       this.handleError(error);
-
       throw error;
     }
   }
