@@ -59,17 +59,18 @@ const onSubmit = handleSubmit(async values => {
     <template #content>
       <UForm id="create-edit-form" :state="{}" @submit="onSubmit">
         <div class="flex flex-col gap-3">
-          <FormField name="account" label="帳號" :disabled="isEdit" />
-          <FormField name="name" label="使用者名稱" />
+          <FormField name="account" label="帳號" :disabled="isEdit" isRequired />
+          <FormField name="name" label="使用者名稱" isRequired />
           <FormField
             name="groups"
             label="帳戶群組"
-            type="select"
+            fieldType="select"
             :items="groupOptions"
             :multiple="true"
+            isRequired
           />
-          <FormField name="email" label="Email" />
-          <FormField name="status" label="狀態" type="switch" />
+          <FormField name="email" label="Email" isRequired />
+          <FormField name="status" label="狀態" fieldType="switch" />
         </div>
       </UForm>
     </template>

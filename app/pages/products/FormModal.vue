@@ -70,10 +70,10 @@ const items = ref([
           <div class="flex-1 flex flex-col gap-3">
             <FormField name="name" label="商品名稱" />
             <FormField name="number" label="商品編號" />
-            <FormField name="category" label="類別" :items type="select" />
-            <FormField name="stock" label="庫存" type="number" />
+            <FormField name="category" label="類別" :items fieldType="select" />
+            <FormField name="stock" label="庫存" fieldType="number" />
             <FormField name="price" label="單價" />
-            <FormField name="status" label="狀態" type="switch" />
+            <FormField name="status" label="狀態" fieldType="switch" />
           </div>
 
           <USeparator orientation="vertical" class="hidden md:block h-auto self-stretch -my-6" />

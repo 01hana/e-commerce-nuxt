@@ -19,7 +19,11 @@ const { t } = useI18n();
         <UButton icon="i-heroicons-bars-3" variant="ghost" color="neutral" />
 
         <template #title>
-          <img src="@/assets/images/logo/logo-h.png" :alt="t('sitename')" class="object-contain h-[120px]"/>
+          <img
+            src="@/assets/images/logo/logo-h.png"
+            :alt="t('sitename')"
+            class="object-contain h-[120px]"
+          />
         </template>
 
         <template #body>
@@ -30,16 +34,25 @@ const { t } = useI18n();
       </USlideover>
 
       <div class="flex items-center">
-        <UButton icon="fluent:alert-24-regular" variant="link" class="text-slate-700 rounded-2xl" />
-
         <UButton
-          icon="fluent:slide-text-person-24-regular"
-          size="xl"
+          icon="fluent:alert-24-regular"
           variant="link"
-          class="text-slate-700"
+          class="text-slate-700 hover:text-slate-900 rounded-2xl"
+        />
+
+        <UUser
+          name="Eva"
+          description="開發工程師"
+          size="xl"
+          class="cursor-pointer gap-1"
+          to="/accounts/profile"
         >
-          <span>Eva</span>
-        </UButton>
+          <template #avatar>
+            <div class="flex items-center justify-center w-10 h-10">
+              <UIcon name="fluent:slide-text-person-24-regular" class="text-slate-700" />
+            </div>
+          </template>
+        </UUser>
       </div>
     </div>
   </header>

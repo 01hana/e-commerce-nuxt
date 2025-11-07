@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ inheritAttrs: false });
+
 const {
   multiple = false,
   accept = '',
@@ -48,5 +49,3 @@ const { value, errorMessage: errorMessages } = useField<any>(
     </UFileUpload>
   </UFormField>
 </template>
-
-<style scoped></style>

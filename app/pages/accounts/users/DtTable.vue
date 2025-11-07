@@ -40,7 +40,7 @@ function statusChange(id: string, value: boolean) {
         <FormField
           v-model="row.status"
           name="status"
-          type="switch"
+          fieldType="switch"
           class="flex justify-center"
           @change="statusChange(row.id, row.status)"
         />

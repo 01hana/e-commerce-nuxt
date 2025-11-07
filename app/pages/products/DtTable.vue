@@ -1,11 +1,11 @@
 <script setup lang="ts">
 const { params, filters, actionStatus } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
 
-onMounted(() => {
-  const { getTable } = useProducts();
+// onMounted(() => {
+//   const { getTable } = useProducts();
 
-  getTable(params.value);
-});
+//   getTable(params.value);
+// });
 </script>
 
 <template>
@@ -55,9 +55,9 @@ onMounted(() => {
       }"
     />
 
-    <vxe-column min-width="120" field="status" title="狀態" align="center" :filters>
+    <vxe-column min-width="120" field="status" title="是否有庫存" align="center" :filters>
       <template #default="{ row }">
-        <vxe-switch :model-value="row.status" @change="" />
+        <FormField v-model="row.status" name="status" fieldType="switch" class="flex justify-center" />
       </template>
     </vxe-column>
 

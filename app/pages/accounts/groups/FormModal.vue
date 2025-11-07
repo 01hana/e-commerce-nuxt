@@ -72,9 +72,9 @@ function toggleAll(path: string, value: boolean) {
       <UForm id="create-edit-form" :state="{}" @submit="onSubmit">
         <div class="flex gap-6 md:flex-row flex-col">
           <div class="flex-1 flex flex-col gap-3">
-            <FormField name="name" label="群組名稱" />
-            <FormField name="description" label="描述" type="textarea" />
-            <FormField name="sort" label="排序" type="number" />
+            <FormField name="name" label="群組名稱" isRequired />
+            <FormField name="description" label="描述" fieldType="textarea" />
+            <FormField name="sort" label="排序" fieldType="number" />
           </div>
 
           <USeparator orientation="vertical" class="hidden md:block h-auto self-stretch -my-6" />

@@ -1,15 +1,18 @@
 <script setup lang="ts">
 defineOptions({ inheritAttrs: false });
+
 const {
   icon = '',
-  type = 'input',
+  fieldType = 'input',
   hideLabel = false,
   multiple = false,
+  isRequired = false,
 } = defineProps({
   icon: String,
-  type: String,
+  fieldType: String,
   hideLabel: Boolean,
   multiple: Boolean,
+  isRequired: Boolean,
 });
 
 const attrs = useAttrs();
@@ -43,11 +46,12 @@ const { value, errorMessage: errorMessages } = useField<any>(
       <div class="flex items-center gap-1">
         <UIcon v-if="icon" :name="icon" class="w-4 h-4" />
         <span v-if="!hideLabel" class="text-base">{{ label }}</span>
+        <span v-if="isRequired" class="text-red-500">*</span>
       </div>
     </template>
 
-    <USelect
-      v-if="type === 'select'"
+    <USelectMenu
+      v-if="fieldType === 'select'"
       v-model="value"
       value-key="id"
       :multiple
@@ -56,8 +60,17 @@ const { value, errorMessage: errorMessages } = useField<any>(
       :items="$attrs.items as any[]"
     />
 
+    <URadioGroup
+      v-if="fieldType === 'radio'"
+      v-model="value"
+      value-key="id"
+      size="xl"
+      v-bind="$attrs"
+      :items="$attrs.items as any[]"
+    />
+
     <USwitch
-      v-if="type === 'switch'"
+      v-if="fieldType === 'switch'"
       v-model="value"
       unchecked-icon="i-lucide-x"
       checked-icon="i-lucide-check"
@@ -66,7 +79,7 @@ const { value, errorMessage: errorMessages } = useField<any>(
     />
 
     <UInputNumber
-      v-if="type === 'number'"
+      v-if="fieldType === 'number'"
       v-model="value"
       :default-value="0"
       class="w-full"
@@ -76,17 +89,23 @@ const { value, errorMessage: errorMessages } = useField<any>(
     />
 
     <UTextarea
-      v-if="type === 'textarea'"
+      v-if="fieldType === 'textarea'"
       v-model="value"
       autoresize
       class="w-full"
       v-bind="$attrs"
     />
 
-    <UInput v-if="type === 'input'" v-model="value" class="w-full" v-bind="$attrs">
+    <UInput v-if="fieldType === 'input'" v-model="value" class="w-full" v-bind="$attrs">
       <template #trailing>
         <slot />
       </template>
     </UInput>
   </UFormField>
 </template>
+
+<style scoped>
+:deep(label) {
+  display: flex;
+}
+</style>
