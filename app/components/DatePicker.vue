@@ -62,8 +62,14 @@ const calendarValue = computed({
     </template>
 
     <UPopover>
-      <UButton color="neutral" variant="outline" icon="i-lucide-calendar" block class="justify-start">
-        {{ calendarValue ? df.format(calendarValue.toDate(timeZone)) : '選擇日期' }}
+      <UButton
+        color="neutral"
+        variant="outline"
+        icon="i-lucide-calendar"
+        block
+        class="justify-start"
+      >
+        {{ calendarValue ? df.format(calendarValue.toDate(timeZone)) : `${t('actions.pickDate')}` }}
       </UButton>
 
       <template #content>

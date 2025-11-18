@@ -11,11 +11,11 @@ export interface ModalProps {
   setTitle: (title: string, subtitle?: string) => void;
   afterEnter: () => void;
   afterLeave: () => void;
-  setModal: (statusOrId: boolean | string | number, isPreview?: boolean | undefined) => void;
+  setModal: (statusOrId: boolean | string | number, isView?: boolean | undefined) => void;
   setLoading: (state: boolean) => void;
   setSpinner: (state: boolean) => void;
   isShown: ComputedRef<boolean>;
-  isPreview: ComputedRef<boolean>;
+  isView: ComputedRef<boolean>;
   isAdd: ComputedRef<boolean>;
   isEdit: ComputedRef<boolean>;
 }
@@ -26,6 +26,8 @@ export function useModal(): ModalProps {
   const [loading, setLoading] = useAppState(false);
   const [spinner, setSpinner] = useAppState(false);
 
+  const { t } = useI18n();
+
   const id = ref();
   const type = ref();
   const show = ref(false);
@@ -35,7 +37,7 @@ export function useModal(): ModalProps {
   const _shown = shallowRef(false);
 
   const isShown = computed(() => _shown.value);
-  const isPreview = computed(() => type.value === 'PREVIEW');
+  const isView = computed(() => type.value === 'VIEW');
   const isAdd = computed(() => type.value === 'ADD');
   const isEdit = computed(() => type.value === 'EDIT');
 
@@ -58,7 +60,7 @@ export function useModal(): ModalProps {
     setSpinner(false);
   }
 
-  function setModal(statusOrId: boolean | string | number, isPreview?: boolean | undefined) {
+  function setModal(statusOrId: boolean | string | number, isView?: boolean | undefined) {
     if (typeof statusOrId === 'boolean') {
       if (!statusOrId) {
         show.value = false;
@@ -68,7 +70,7 @@ export function useModal(): ModalProps {
 
       id.value = undefined;
       type.value = 'ADD';
-      subtitle.value = '新增';
+      subtitle.value = t('actions.create');
       show.value = true;
 
       return;
@@ -76,8 +78,8 @@ export function useModal(): ModalProps {
 
     id.value = statusOrId;
 
-    type.value = !isPreview ? 'EDIT' : 'PREVIEW';
-    subtitle.value = !isPreview ? '編輯' : '瀏覽';
+    type.value = !isView ? 'EDIT' : 'VIEW';
+    subtitle.value = !isView ? t('actions.edit') : t('actions.view');
     show.value = true;
   }
 
@@ -90,7 +92,7 @@ export function useModal(): ModalProps {
     loading,
     spinner,
     isShown,
-    isPreview,
+    isView,
     isAdd,
     isEdit,
 

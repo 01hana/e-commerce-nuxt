@@ -1,0 +1,68 @@
+{
+    "sitename": "nuxt template",
+    "language": "Language",
+    "lang": "English",
+    "chooseLanguage": "Choose language",
+    "notFound": "No Data",
+    "menu": {
+        "dashboard": "Dashboard",
+        "customers": "Customers",
+        "products": "Products",
+        "orders": "Orders",
+        "accounts": "Accounts",
+        "groups": "Groups",
+        "users": "Users",
+        "accounts-groups": "Groups",
+        "accounts-users": "Users"
+    },
+    "auth": {
+        "login": "Login",
+        "logout": "Logout",
+        "forget": "Forgot password"
+    },
+    "actions": {
+        "actions": "Actions",
+        "create": "Create",
+        "edit": "Edit",
+        "view": "View",
+        "save": "Save",
+        "enter": "Confirmed | Completed",
+        "enable": "Enable",
+        "disable": "Disable",
+        "remove": "Remove",
+        "close": "Close | Cancel",
+        "batch": "Batch selection | End selection | Selected",
+        "batchApply": "Batch apply",
+        "apply": "Apply",
+        "clear": "Clear",
+        "advance": "Advance {0}",
+        "advanceSearch": "Advanced search",
+        "search": "Search",
+        "selectAll": "Select all",
+        "pickDate": "Select Date"
+    },
+    "form": {
+        "keyword": "Search keyword...",
+        "pwdShouldBe": "Password should include",
+        "pwdString": "At least one English letter",
+        "pwdNumber": "At least one digit",
+        "pwdSymbol": "At least one special symbol",
+        "pwdLength": "At least 8 characters long",
+        "createdAt": "Create at",
+        "updatedAt": "Last update at",
+        "gender": {
+            "male": "Male",
+            "female": "Female",
+            "unknown": "Don't wanna tell"
+        },
+        "status": "Status"
+    },
+    "confirm": {
+        "removeTitle": "Removal confirmation",
+        "remove": "Are you sure you want to delete {name} ?",
+        "removeBatch": "Delete {count} selected items?"
+    },
+    "error": {
+        "unexpectOccured": "An unexpected error occurred"
+    }
+}

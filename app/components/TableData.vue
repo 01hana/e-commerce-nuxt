@@ -107,7 +107,7 @@ async function onRemove() {
         min-width="80"
         width="100"
         field="actions"
-        title="操作"
+        :title="t('actions.actions')"
         align="right"
         fixed="left"
       >

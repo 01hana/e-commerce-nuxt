@@ -114,7 +114,7 @@ provide('useSearchModal', useSearchModal);
               ? 'fluent:text-bullet-list-checkmark-20-filled'
               : 'fluent:dismiss-circle-24-regular'
           "
-          :label="$t('actions.batch')"
+          :label="isSelectBatch ? $t('actions.batch') : $t('actions.batch', 0)"
           @click="selectVisible"
         />
         <UDropdownMenu :items="batchItems">
