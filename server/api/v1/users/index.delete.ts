@@ -3,9 +3,7 @@ import { userService } from '../../../services/users';
 export default defineEventHandler(async event => {
   const body = await readBody(event);
 
-  const { ids } = body;
+  const ids = body?.ids;
 
-  await userService.delete(ids);
-
-  return { success: true, deleted: ids };
+  return userService.delete(ids);
 });

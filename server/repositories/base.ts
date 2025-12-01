@@ -1,4 +1,5 @@
 import { db } from '../utils/db';
+import { appError } from '../utils/appError';
 
 interface TableParams {
   sortField: string;
@@ -114,7 +115,15 @@ export class BaseRepository {
       [id],
     );
 
-    return rows.length ? rows[0] : null;
+    if (!rows.length) return null;
+
+    const [row] = rows;
+
+    if ('status' in row) {
+      row.status = row.status === 1 || row.status === '1' ? true : false;
+    }
+
+    return row;
   }
 
   /**
@@ -186,154 +195,56 @@ export class BaseRepository {
 
     await db.query(sql, ids);
   }
+
+  /**
+   *  檢查重複
+   */
+  async uniqueCheck(
+    data: any,
+    keys: string[],
+    translate: Record<string, string>,
+    excludeId?: string,
+  ) {
+    if (!keys.length) return;
+
+    const conditions: string[] = [];
+    const params: any[] = [];
+
+    for (const key of keys) {
+      if (data[key] !== undefined && data[key] !== null) {
+        conditions.push(`${key} = ?`);
+
+        params.push(data[key]);
+      }
+    }
+
+    if (!conditions.length) return;
+
+    let sql = `
+      SELECT BIN_TO_UUID(id,1) AS id, ${keys.join(',')}
+      FROM ${this.table}
+      WHERE (${conditions.join(' OR ')})
+    `;
+
+    // UPDATE 模式：排除自己
+    if (excludeId) {
+      sql += ` AND id <> UUID_TO_BIN(?,1)`;
+      params.push(excludeId);
+    }
+
+    const [rows]: any = await db.query(sql, params);
+
+    if (!rows.length) return;
+
+    const [row] = rows;
+
+    // 找出是哪個欄位重複
+    for (const key of keys) {
+      if (row[key] === data[key]) {
+        const label = translate[key] ?? key;
+
+        throw appError(400, `${label} 已被使用`);
+      }
+    }
+  }
 }
-
-// export class BaseRepository {
-//   table: string;
-//   sortableFields: string[];
-//   searchableFields: string[];
-//   selectableFields: string[];
-
-//   constructor(
-//     table: string,
-//     sortableFields: string[],
-//     searchableFields: string[],
-//     selectableFields: string[],
-//   ) {
-//     this.table = table;
-//     this.sortableFields = sortableFields;
-//     this.searchableFields = searchableFields;
-//     this.selectableFields = selectableFields;
-//   }
-
-//   async findAll(options: TableParams) {
-//     const { sortField, sortOrder, keyword, filters, length, offset } = options;
-//     const params: any[] = [];
-
-//     const selectClause = ['BIN_TO_UUID(id, 1) as id', ...this.selectableFields].join(', ');
-
-//     let sql = `SELECT ${selectClause} FROM \`${this.table}\` WHERE deleted_at IS NULL`;
-
-//     // 搜尋
-//     if (keyword && this.searchableFields.length) {
-//       const conditions = this.searchableFields.map(field => `${field} LIKE ?`).join(' OR ');
-
-//       sql += ` AND (${conditions})`;
-
-//       this.searchableFields.forEach(() => {
-//         params.push(`%${keyword}%`);
-//       });
-//     }
-
-//     // 篩選
-//     for (const [field, value] of Object.entries(filters)) {
-//       sql += ` AND ${field} = ?`;
-//       params.push(value);
-//     }
-
-//     // 排序
-//     const safeSortField = this.sortableFields.includes(sortField)
-//       ? sortField
-//       : this.sortableFields[0];
-//     const safeSortOrder = sortOrder?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
-//     sql += ` ORDER BY ${safeSortField} ${safeSortOrder}`;
-
-//     // 分頁
-//     sql += ` LIMIT ? OFFSET ?`;
-//     params.push(length, offset);
-
-//     const [rows]: any = await db.query(sql, params);
-
-//     return rows;
-//   }
-
-//   async countAll(options: { keyword: string; filters: { field: string; value: any } }) {
-//     const { keyword, filters } = options;
-//     const params: any[] = [];
-
-//     let sql = `SELECT COUNT(*) as total FROM \`${this.table}\` WHERE deleted_at IS NULL`;
-
-//     // 搜尋
-//     if (keyword && this.searchableFields.length) {
-//       const conditions = this.searchableFields.map(field => `${field} LIKE ?`).join(' OR ');
-
-//       sql += ` AND (${conditions})`;
-
-//       this.searchableFields.forEach(() => {
-//         params.push(`%${keyword}%`);
-//       });
-//     }
-
-//     // 篩選
-//     for (const [field, value] of Object.entries(filters)) {
-//       sql += ` AND ${field} = ?`;
-//       params.push(value);
-//     }
-
-//     const [rows]: any = await db.query(sql, params);
-
-//     return rows[0].total;
-//   }
-
-//   async findById(id: string) {
-//     const selectClause = ['BIN_TO_UUID(id, 1) as id', ...this.selectableFields].join(', ');
-
-//     const [rows]: any = await db.query(
-//       `SELECT ${selectClause} FROM \`${this.table}\` WHERE id = UUID_TO_BIN(?, 1)`,
-//       [id],
-//     );
-
-//     return rows.length ? rows[0] : null;
-//   }
-
-//   async insert(data: Record<string, any>) {
-//     const keys = Object.keys(data);
-
-//     if (!keys.length) return;
-
-//     const columns = keys.join(', ');
-//     const placeholders = keys.map(key => (key === 'id' ? 'UUID_TO_BIN(?, 1)' : '?')).join(', ');
-//     const values = Object.values(data);
-
-//     const sql = `INSERT INTO \`${this.table}\` (${columns}, created_at, updated_at)
-//                VALUES (${placeholders}, NOW(), NOW())`;
-
-//     await db.query(sql, values);
-//   }
-
-//   async update(id: string, data: Record<string, any>) {
-//     // 過濾掉 value 為 undefined 的欄位
-//     const entries = Object.entries(data).filter(([_, value]) => value !== undefined);
-
-//     if (entries.length === 0) return; // 沒有要更新的欄位就直接跳過
-
-//     const keys = entries.map(([key]) => key);
-//     const values = entries.map(([_, value]) => value);
-
-//     const setClause = keys.map(key => `${key} = ?`).join(', ');
-
-//     const sql = `UPDATE \`${this.table}\` SET ${setClause}, updated_at = NOW() WHERE id = UUID_TO_BIN(?, 1)`;
-
-//     await db.query(sql, [...values, id]);
-//   }
-
-//   async softDelete(ids: string[]) {
-//     if (!Array.isArray(ids) || ids.length === 0) return;
-
-//     const placeholders = ids.map(() => 'UUID_TO_BIN(?, 1)').join(',');
-
-//     const sql = `UPDATE \`${this.table}\` SET deleted_at = NOW() WHERE id IN (${placeholders})`;
-
-//     await db.query(sql, ids);
-//   }
-
-//   async hardDelete(ids: string[]) {
-//     if (!Array.isArray(ids) || ids.length === 0) return;
-
-//     const placeholders = ids.map(() => 'UUID_TO_BIN(?, 1)').join(',');
-
-//     const sql = `DELETE FROM \`${this.table}\` WHERE id IN (${placeholders})`;
-
-//     await db.query(sql, ids);
-//   }
-// }

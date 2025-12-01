@@ -11,10 +11,16 @@ class UserRepository extends BaseRepository {
     );
   }
 
+  private uniqueTranslate = {
+    email: 'Email',
+    account: '帳號',
+    name: '使用者名稱',
+  };
+
   /**
    * 取得符合 filters.groups 篩選的 userId
    */
-  private async findUserIdsByGroups(groups: string[]) {
+  public async findUserIdsByGroups(groups: string[]) {
     if (!groups?.length) return;
 
     const [rows]: any = await db.query(
@@ -34,7 +40,7 @@ class UserRepository extends BaseRepository {
   /**
    * 查詢使用者群組
    */
-  private async findUserGroups(filterUsers: any[]): Promise<any[]> {
+  public async findUserGroups(filterUsers: any[]): Promise<any[]> {
     // 抓出所有使用者 ID
     const userIds = filterUsers.map((user: { id: string }) => user.id);
 
@@ -53,6 +59,7 @@ class UserRepository extends BaseRepository {
     );
 
     const groupMap: Record<string, string[]> = {};
+
     for (const row of groupRows) {
       if (!groupMap[row.user_id]) groupMap[row.user_id] = [];
 
@@ -69,53 +76,7 @@ class UserRepository extends BaseRepository {
     return mergedData;
   }
 
-  /**
-   * 分頁查詢 + 群組篩選
-   */
-  async getTable(body: any) {
-    const [sortField, sortOrder] = body.sort || ['updated_at', 'desc'];
-    const keyword = body.searches?.keyword || '';
-    const filters = body.filters || {};
-    const p = Number(body.p) || 1;
-    const length = Number(body.length) || 35;
-    const offset = (p - 1) * length;
-
-    // 先檢查是否有群組篩選
-    const targetUserIds = await this.findUserIdsByGroups(filters.groups);
-
-    // 根據篩選條件查詢主表資料
-    const { data: users, total } = await this.findAll({
-      sortField,
-      sortOrder,
-      keyword,
-      filters: filters,
-      length,
-      offset,
-    });
-
-    // 若有 groups 篩選，進一步過濾結果
-    let filteredUsers = users;
-
-    if (targetUserIds) {
-      filteredUsers = users.filter((u: any) => targetUserIds!.includes(u.id));
-    }
-
-    if (!filteredUsers.length) {
-      return { data: [], p, length, total: 0 };
-    }
-
-    // 取得使用者關聯群組資料
-    const mergedData = await this.findUserGroups(filteredUsers);
-
-    return {
-      data: mergedData,
-      p,
-      length,
-      total,
-    };
-  }
-
-  async getGroups() {
+  public async getGroups() {
     const [rows]: any = await db.query(`
       SELECT BIN_TO_UUID(id, 1) as id, name as label
       FROM \`groups\`
@@ -126,7 +87,7 @@ class UserRepository extends BaseRepository {
     return { data: rows };
   }
 
-  async getFilters() {
+  public async getFilters() {
     const [groups]: any = await db.query(`
       SELECT BIN_TO_UUID(id, 1) as value, name as label
       FROM \`groups\`
@@ -142,7 +103,7 @@ class UserRepository extends BaseRepository {
     return { data: { groups, status } };
   }
 
-  async findGroupsByUserId(id: string) {
+  public async findGroupsByUserId(id: string) {
     const [rows]: any = await db.query(
       `SELECT BIN_TO_UUID(g.id, 1) AS id
        FROM user_groups ug
@@ -154,7 +115,10 @@ class UserRepository extends BaseRepository {
     return rows.map((row: any) => row.id);
   }
 
-  async create(data: any) {
+  public async create(data: any) {
+    // 先做 UNIQUE 檢查
+    await this.uniqueCheck(data, ['email', 'account', 'name'], this.uniqueTranslate);
+
     const { account, name, email, status, groups } = data;
 
     // 建立 UUID
@@ -191,7 +155,9 @@ class UserRepository extends BaseRepository {
   }
 
   // 更新使用者資料 + 群組關聯
-  async updateUser(id: string, data: any) {
+  public async updateUser(id: string, data: any) {
+    await this.uniqueCheck(data, ['email', 'account', 'name'], this.uniqueTranslate, id);
+
     const { name, email, status, groups } = data;
 
     // 更新使用者資料
