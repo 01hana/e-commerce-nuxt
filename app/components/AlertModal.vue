@@ -2,7 +2,7 @@
 type Alertype = 'success' | 'info' | 'warning' | 'error';
 
 enum alertColor {
-  success = 'success',
+  success = 'teal-400',
   info = 'info',
   warning = 'warning',
   error = 'red-400',
@@ -42,7 +42,7 @@ const color = computed(() => alertColor[type.value]);
   >
     <template #body>
       <div class="flex flex-col items-center gap-3">
-        <UIcon :name="icon" class="w-16 h-16 bg-red-400" />
+        <UIcon :name="icon" class="w-16 h-16" :class="[`bg-${color}`]" />
         <h3 :class="[`text-${color}`]" class="text-xl font-bold">{{ title }}</h3>
 
         <slot name="content" />
@@ -51,7 +51,7 @@ const color = computed(() => alertColor[type.value]);
 
     <template #footer="{ close }">
       <UButton
-        :label="t('actions.enter', 1)"
+        :label="t('actions.enter', 0)"
         variant="solid"
         type="submit"
         :class="[`bg-${color}`]"

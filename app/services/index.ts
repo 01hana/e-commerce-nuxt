@@ -1,30 +1,28 @@
-import { useStorage } from '@vueuse/core';
 import { $fetch } from 'ofetch';
 
 type Methods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
 class HttpRequest {
-  private token = useStorage('accessToken', '');
-
   private getDefaultHeaders() {
+    const { getLocalStorage } = useStorage();
+
+    const token = getLocalStorage('accessToken');
+
     return {
-      ...(this.token.value ? { Authorization: `Bearer ${this.token.value}` } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
   }
 
   private handleError(error: any) {
     const toast = useAppToast();
+    const { clearAuth } = useAuth();
 
     const status = error?.response?.status;
     const message = error?.response?._data?.message || error.message;
 
-    if (status === 401) {
-      toast.error('登入閒置逾期，請重新登入');
-      // TODO: 這裡可加 clearAuth()
-      return;
-    }
-
     toast.error(`${status || ''} ${message || '未知錯誤'}`);
+
+    if (status === 401) clearAuth();
   }
 
   public async request<T = any>(
@@ -37,7 +35,7 @@ class HttpRequest {
     const config = useRuntimeConfig();
 
     const requestOptions: any = {
-      baseURL: config.public.apiUrl || 'http://localhost:3000/api/v1/',
+      baseURL: config.public.API_URL || 'http://localhost:3000/api/v1/',
       method,
       headers,
       ...options,
@@ -49,7 +47,6 @@ class HttpRequest {
     try {
       return await $fetch<T>(url, requestOptions);
     } catch (error: any) {
-      console.log('error', error);
       this.handleError(error);
       throw error;
     }

@@ -6,6 +6,7 @@ const [open, setOpen] = useAppState(false);
 const { t } = useI18n();
 const localePath = useLocalePath();
 const route = useRoute();
+const { user } = storeToRefs(useAuth());
 
 watch(
   () => route.name,
@@ -52,7 +53,7 @@ watch(
         />
 
         <UUser
-          name="Eva"
+          :name="user?.name"
           description="開發工程師"
           size="xl"
           class="cursor-pointer gap-1"

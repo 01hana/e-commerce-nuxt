@@ -1,11 +1,42 @@
 <script setup lang="ts">
-const { locale } = useI18n();
+import { sideMenu } from '~~/constants/nav';
+
+const { t, locale } = useI18n();
+const route = useRoute();
 
 useHead({
   htmlAttrs: {
     lang: locale.value,
   },
+  title: () => {
+    const flatMenu = sideMenu.flatMap(item => {
+      if (!item.children) return item.name ? [item.name] : [];
+
+      return item.children.map(child => child.name);
+    });
+
+    const menu = flatMenu.find(item => item === route.name?.toString().replace(/___[\w-]+$/, ''));
+
+    if (!menu) return '';
+
+    return t(`menu.${menu}`);
+  },
+  titleTemplate: (title?: string) => (title ? title + ' - ' : '') + t('sitename'),
 });
+
+// watch(
+//   () => locale.value,
+//   newLocale => {
+//     if (!newLocale) return;
+
+//     const router = useRouter();
+//     const switchLocalePath = useSwitchLocalePath();
+
+//     const path = switchLocalePath(newLocale);
+
+//     router.push(path);
+//   },
+// );
 </script>
 
 <template>

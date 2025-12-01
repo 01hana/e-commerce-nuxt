@@ -1,5 +1,6 @@
 {
     "sitename": "nuxt template",
+    "copyright": "© { year } EShop Enterprise Co., Ltd. All rights reserved.",
     "language": "Language",
     "lang": "English",
     "chooseLanguage": "Choose language",
@@ -10,15 +11,18 @@
         "products": "Products",
         "orders": "Orders",
         "accounts": "Accounts",
-        "groups": "Groups",
-        "users": "Users",
         "accounts-groups": "Groups",
-        "accounts-users": "Users"
+        "accounts-users": "Users",
+        "accounts-profile": "Profile"
     },
     "auth": {
         "login": "Login",
         "logout": "Logout",
-        "forget": "Forgot password"
+        "forget": "Forgot password",
+        "hasAccount": "Already has an account?",
+        "resetPassword": "Enter your new password to reset password",
+        "firstLogin": "The new account is activated successfully, please set your password to sign in",
+        "receiveEmail": "Enter your email and we'll send you instructions to reset your password."
     },
     "actions": {
         "actions": "Actions",
@@ -39,7 +43,7 @@
         "advanceSearch": "Advanced search",
         "search": "Search",
         "selectAll": "Select all",
-        "pickDate": "Select Date"
+        "selectDate": "Select Date"
     },
     "form": {
         "keyword": "Search keyword...",

@@ -2,8 +2,9 @@
 import { usersFields as updateFields } from '../../../../constants/form/update-fields';
 
 const { updateDtRowData, params } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
-const { id, show, isAdd, isEdit, setModal } = inject(useModalKey) as ModalProps;
+const { id, show, isAdd, isEdit, setModal, setLoading } = inject(useModalKey) as ModalProps;
 
+const { t } = useI18n();
 const { get, create, set, getTable, getGroups } = useUsers();
 const { handleSubmit, resetForm, setFieldValue } = useForm({
   validationSchema: {
@@ -12,13 +13,15 @@ const { handleSubmit, resetForm, setFieldValue } = useForm({
     groups: 'required',
     email: 'required|email',
   },
-  initialValues: {
-    status: true,
-  },
+  // initialValues: {
+  //   status: true,
+  // },
 });
 const { formUpdate } = useAppForm(updateFields, setFieldValue);
+const [isOpen, setOpen] = useAppState(false);
 
 const groupOptions = ref<{ id: string; label: string }[]>([]);
+const email = ref('');
 
 watch([show, id], async ([isShow, id]) => {
   if (isShow && !id) {
@@ -39,10 +42,15 @@ function onAfterLeave() {
 }
 
 const onSubmit = handleSubmit(async values => {
+  setLoading(true);
+
   if (isAdd.value) {
+    email.value = values.email;
+
     await create(values).then(() => getTable(params.value));
 
     setModal(false);
+    setOpen(true);
   }
 
   if (isEdit.value) {
@@ -51,6 +59,8 @@ const onSubmit = handleSubmit(async values => {
     updateDtRowData(res);
     setModal(false);
   }
+
+  setLoading(false);
 }) as (e?: Event) => Promise<void>;
 </script>
 
@@ -75,4 +85,19 @@ const onSubmit = handleSubmit(async values => {
       </UForm>
     </template>
   </Modal>
+
+  <AlertModal
+    v-model:open="isOpen"
+    :title="t('confirm.createAccountAlert')"
+    type="success"
+    icon="fluent:checkmark-circle-24-filled"
+    @callAction="setOpen(false)"
+  >
+    <template #content>
+      <i18n-t keypath="confirm.createAccountAlertText1" tag="div" scope="global">
+        <UBadge color="success" class="rounded-full bg-teal-400 mx-2" :label="email" />
+      </i18n-t>
+      <span>{{ $t('confirm.createAccountAlertText2') }}</span>
+    </template>
+  </AlertModal>
 </template>

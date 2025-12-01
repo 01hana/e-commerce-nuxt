@@ -3,11 +3,13 @@ const isCollapsed = inject('isCollapsed') as boolean;
 
 const router = useRouter();
 const { t } = useI18n();
-const switchLocalePath = useSwitchLocalePath();
 
 const { menu } = useNavigation();
+const { logout } = useAuth();
 
 function changeLang(lang: 'zh-TW' | 'en') {
+  const switchLocalePath = useSwitchLocalePath();
+
   const path = switchLocalePath(lang);
 
   router.push(path);
@@ -63,6 +65,7 @@ function changeLang(lang: 'zh-TW' | 'en') {
       variant="link"
       color="neutral"
       class="flex items-center gap-2"
+      @click="logout"
     >
       <span
         class="transition-all duration-100 whitespace-nowrap overflow-hidden"

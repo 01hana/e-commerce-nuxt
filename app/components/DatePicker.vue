@@ -77,7 +77,7 @@ const calendarValue = computed({
         block
         class="justify-start"
       >
-        {{ calendarValue ? df.format(calendarValue.toDate(timeZone)) : `${t('actions.pickDate')}` }}
+        {{ calendarValue ? df.format(calendarValue.toDate(timeZone)) : `${t('actions.selectDate')}` }}
       </UButton>
 
       <template #content>

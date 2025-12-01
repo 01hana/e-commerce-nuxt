@@ -1,7 +1,4 @@
-import type { RouteLocationAsPathGeneric, RouteLocationAsRelativeGeneric } from 'vue-router';
 import { sideMenu } from '../../constants/nav';
-
-type ToType = string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric | undefined;
 
 /**
  * 確保所有 to 都能轉成乾淨 string path

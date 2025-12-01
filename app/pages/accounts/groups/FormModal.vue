@@ -2,7 +2,7 @@
 import { groupsFields as updateFields } from '~~/constants/form/update-fields';
 
 const { updateDtRowData, params } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
-const { id, show, isAdd, isEdit, setModal } = inject(useModalKey) as ModalProps;
+const { id, show, isAdd, isEdit, setModal, setLoading } = inject(useModalKey) as ModalProps;
 
 const { t } = useI18n();
 const { get, create, set, getTable } = useGroups();
@@ -40,6 +40,8 @@ function onAfterLeave() {
 }
 
 const onSubmit = handleSubmit(async values => {
+  setLoading(true);
+
   const data = { ...values, permissions: toApi() };
 
   if (isAdd.value) {
@@ -53,15 +55,16 @@ const onSubmit = handleSubmit(async values => {
   }
 
   setModal(false);
+  setLoading(false);
 }) as (e?: Event) => Promise<void>;
 
-function isAllChecked(path: string) {
-  return Object.values(permissions.value[path] ?? {}).every(Boolean);
+function isAllChecked(path: ToType) {
+  return Object.values(permissions.value[path as string] ?? {}).every(Boolean);
 }
 
-function toggleAll(path: string, value: boolean) {
-  for (const key in permissions.value[path]) {
-    permissions.value[path][key] = value;
+function toggleAll(path: ToType, value: boolean) {
+  for (const key in permissions.value[path as string]) {
+    permissions.value[path as string][key] = value;
   }
 }
 </script>

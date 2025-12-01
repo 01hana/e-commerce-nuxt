@@ -38,7 +38,7 @@ export function usePermissions(t: (key: string) => string) {
   const transSideMenu = computed(() =>
     sideMenu.map(item => ({
       ...item,
-      label: t(item.label),
+      label: t(item.label as string),
     })),
   );
 

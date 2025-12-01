@@ -4,21 +4,25 @@ export const sideMenu: NavigationMenuItem[] = [
   {
     label: 'menu.dashboard',
     icon: 'solar:chart-2-outline',
+    name: 'dashboard',
     to: '/',
   },
   {
     label: 'menu.customers',
     icon: 'fluent:people-list-24-regular',
+    name: 'customers',
     to: '/customers',
   },
   {
     label: 'menu.products',
     icon: 'fluent:box-24-regular',
+    name: 'products',
     to: '/products',
   },
   {
     label: 'menu.orders',
     icon: 'fluent:cart-24-regular',
+    name: 'orders',
     to: '/orders',
   },
   {
@@ -27,11 +31,13 @@ export const sideMenu: NavigationMenuItem[] = [
     open: true,
     children: [
       {
-        label: 'menu.groups',
+        label: 'menu.accounts-groups',
+        name: 'accounts-groups',
         to: '/accounts/groups',
       },
       {
-        label: 'menu.users',
+        label: 'menu.accounts-users',
+        name: 'accounts-users',
         to: '/accounts/users',
       },
     ],

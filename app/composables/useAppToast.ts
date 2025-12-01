@@ -1,4 +1,4 @@
-type ToastType = "success" | "info" | "warning" | "error";
+type ToastType = 'success' | 'info' | 'warning' | 'error';
 
 export function useAppToast() {
   const toast = useToast();
@@ -7,42 +7,40 @@ export function useAppToast() {
     const base = {
       title: title || type.toUpperCase(),
       description: message,
-      timeout: 3000,
+      color: type,
+      duration: 3000,
       progress: false,
     };
 
     switch (type) {
-      case "success":
+      case 'success':
         toast.add({
           ...base,
-          color: "success",
-          icon: "i-heroicons-check-circle",
+          icon: 'i-heroicons-check-circle',
         });
         break;
-      case "info":
+      case 'info':
         toast.add({
           ...base,
-          color: "info",
-          icon: "i-heroicons-information-circle",
+          icon: 'i-heroicons-information-circle',
         });
         break;
-      case "warning":
+      case 'warning':
         toast.add({
           ...base,
-          color: "warning",
-          icon: "i-heroicons-exclamation-triangle",
+          icon: 'i-heroicons-exclamation-triangle',
         });
         break;
-      case "error":
-        toast.add({ ...base, color: "error", icon: "i-heroicons-x-circle" });
+      case 'error':
+        toast.add({ ...base, icon: 'i-heroicons-x-circle' });
         break;
     }
   };
 
   return {
-    success: (title?: string, msg?: string) => show("success", title, msg),
-    info: (title?: string, msg?: string) => show("info", title, msg),
-    warning: (title?: string, msg?: string) => show("warning", title, msg),
-    error: (title?: string, msg?: string) => show("error", title, msg),
+    success: (title?: string, msg?: string) => show('success', title, msg),
+    info: (title?: string, msg?: string) => show('info', title, msg),
+    warning: (title?: string, msg?: string) => show('warning', title, msg),
+    error: (title?: string, msg?: string) => show('error', title, msg),
   };
 }

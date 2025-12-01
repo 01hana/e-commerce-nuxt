@@ -3,7 +3,7 @@ import type { ModalProps } from '@/composables/useModal';
 
 defineOptions({ inheritAttrs: false });
 
-const { show, title, subtitle, setTitle, afterEnter, afterLeave } = inject(
+const { show, title, loading, subtitle, setTitle, afterEnter, afterLeave } = inject(
   useModalKey,
 ) as ModalProps;
 
@@ -58,7 +58,7 @@ setTitle(pageTitle.value);
       <slot v-if="$slots.footer" name="footer" />
 
       <template v-else>
-        <UButton :label="subtitle" variant="solid" type="submit" :form="formId" />
+        <UButton :label="subtitle" variant="solid" type="submit" :form="formId" :loading />
         <UButton :label="t('actions.close', 2)" color="neutral" variant="outline" @click="close" />
       </template>
     </template>
