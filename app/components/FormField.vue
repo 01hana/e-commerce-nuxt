@@ -58,7 +58,7 @@ const { value, errorMessage: errorMessages } = useField<any>(
     <USelectMenu
       v-if="fieldType === 'select'"
       v-model="value"
-      value-key="id"
+      value-key="value"
       :multiple
       class="w-full"
       v-bind="$attrs"
@@ -68,7 +68,7 @@ const { value, errorMessage: errorMessages } = useField<any>(
     <URadioGroup
       v-if="fieldType === 'radio'"
       v-model="value"
-      value-key="id"
+      value-key="value"
       size="xl"
       orientation="horizontal"
       v-bind="$attrs"

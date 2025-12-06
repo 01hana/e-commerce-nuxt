@@ -30,7 +30,6 @@ const { t } = useI18n();
 const {
   deleteConfirmData,
   isDeleteConfirm,
-  isDeleteSpinner,
   setDeleteSpinner,
   setDeleteConfirm,
   onDeleteConfirmAfterLeave,
@@ -108,26 +107,27 @@ async function onRemove() {
         fixed="left"
       >
         <template #default="{ row }">
-          <div class="d-flex justify-end flex-wrap gap-1">
-            <UButton
-              icon="fluent:edit-line-horizontal-3-24-regular"
-              variant="ghost"
-              @click="setModal(row.id)"
-            />
-            <UButton
-              icon="fluent:delete-24-regular"
-              variant="ghost"
-              color="error"
-              class="text-red-400"
-              :loading="isDeleteSpinner"
-              @click="setDeleteConfirm(row.id, row.name)"
-            />
-          </div>
+          <slot name="actions" :row :setDeleteConfirm>
+            <div class="d-flex justify-end flex-wrap gap-1">
+              <UButton
+                icon="fluent:edit-line-horizontal-3-24-regular"
+                variant="ghost"
+                @click="setModal(row.id)"
+              />
+
+              <UButton
+                icon="fluent:delete-24-regular"
+                variant="ghost"
+                color="error"
+                class="text-red-400"
+                @click="setDeleteConfirm(row.id, row.name)"
+              />
+            </div>
+          </slot>
         </template>
       </vxe-column>
 
       <slot />
-      <!-- <slot v-bind="{ setModal, setDeleteConfirm }" /> -->
     </vxe-table>
 
     <vxe-pager

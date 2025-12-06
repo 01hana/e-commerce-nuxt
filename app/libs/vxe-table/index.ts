@@ -6,6 +6,8 @@ import Base from './base';
 export class DtUtils extends Base {
   public static readonly key = Symbol('DtUtils') as InjectionKey<DtUtils & Base>;
 
+  public manualState = ref('');
+
   constructor(store: StoreGeneric) {
     super(store);
 
@@ -188,5 +190,37 @@ export class DtUtils extends Base {
         return Promise.reject(error);
       })
       .finally(() => this.setSwitchLoading(id, false));
+  };
+
+  public manualHasEditStatus = (row: any) => {
+    return this.table.isEditByRow(row);
+  };
+
+  public manualAddRow = async (record: Record<string, any>) => {
+    const { row: newRow } = await this.table.insert(record);
+
+    this.manualState.value = 'isAdd';
+
+    this.table.setEditRow(newRow);
+  };
+
+  public manualEditRow = (row: any) => {
+    this.manualState.value = 'isEdit';
+
+    this.table.setEditRow(row);
+  };
+
+  public manualSaveRow = async (row: any) => {
+    this.table.clearEdit();
+
+    this.manualState.value === 'isAdd' || !row.id
+      ? await this.store.create(row)
+      : await this.store.set(row.id, row);
+
+    this.store.getTable(this.params.value);
+  };
+
+  public manualCancelRow = (row: any) => {
+    this.table.clearEdit(row);
   };
 }

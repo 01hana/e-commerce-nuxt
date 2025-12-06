@@ -175,7 +175,6 @@ export default class Base {
   public updateDtRowData = (res: VxeTablePropTypes.Row) => {
     if (!this.data.value) return;
 
-    console.log(res);
     const row = this.data.value.find(item => item.id === res.id);
 
     if (!row) return;

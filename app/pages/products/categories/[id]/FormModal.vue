@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { productsFields as updateFields } from '../../../constants/form/update-fields';
+import { productsFields as updateFields } from '../../../../../constants/form/update-fields';
 
 const { updateDtRowData, params } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
 const { id, show, isAdd, isEdit, setModal } = inject(useModalKey) as ModalProps;

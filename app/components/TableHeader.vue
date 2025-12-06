@@ -99,11 +99,15 @@ provide('useSearchModal', useSearchModal);
   <div class="grid grid-cols-6 gap-4">
     <div class="col-span-6 md:col-start-1 md:col-end-4 flex gap-3">
       <UButton
+        v-if="actions.create"
         icon="fluent:add-circle-24-filled"
         :label="t('actions.create')"
         variant="solid"
         @click="setModal(true)"
       />
+
+      <slot v-if="$slots.create" name="create" />
+
       <UFieldGroup size="lg">
         <UButton
           v-if="actions.batch"

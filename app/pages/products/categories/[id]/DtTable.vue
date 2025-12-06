@@ -39,8 +39,6 @@ const { params, filters, actionStatus } = inject(DtUtils.key) as InstanceType<ty
 
     <vxe-column min-width="200" field="name" title="商品名稱" />
 
-    <vxe-column min-width="120" field="category" title="分類" align="center" :filters />
-
     <vxe-column
       min-width="120"
       field="price"

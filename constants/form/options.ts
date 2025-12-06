@@ -1,26 +1,26 @@
 import type { RadioGroupItem } from '@nuxt/ui';
 
 export const orderStatus = [
-  { label: '待付款', id: 'pending' },
-  { label: '已付款', id: 'paid' },
-  { label: '已出貨', id: 'shipped' },
-  { label: '已完成', id: 'completed' },
-  { label: '已取消', id: 'cancelled' },
+  { label: '待付款', value: 'pending' },
+  { label: '已付款', value: 'pavalue' },
+  { label: '已出貨', value: 'shipped' },
+  { label: '已完成', value: 'completed' },
+  { label: '已取消', value: 'cancelled' },
 ];
 
 export const paymentMethods = [
-  { label: '信用卡', id: 'credit' },
-  { label: '貨到付款', id: 'cod' },
-  { label: 'Line Pay', id: 'linepay' },
+  { label: '信用卡', value: 'credit' },
+  { label: '貨到付款', value: 'cod' },
+  { label: 'Line Pay', value: 'linepay' },
 ];
 
 export const shippingMethods = [
-  { label: '宅配', id: 'home' },
-  { label: '超商取貨', id: 'store' },
+  { label: '宅配', value: 'home' },
+  { label: '超商取貨', value: 'store' },
 ];
 
 export const genderOptions: RadioGroupItem[] = [
-  { label: '男', id: 'male' },
-  { label: '女', id: 'female' },
-  { label: '不透露', id: 'unknown' },
+  { label: '男', value: 'male' },
+  { label: '女', value: 'female' },
+  { label: '不透露', value: 'unknown' },
 ];

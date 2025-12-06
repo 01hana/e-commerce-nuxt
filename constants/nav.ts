@@ -17,7 +17,7 @@ export const sideMenu: NavigationMenuItem[] = [
     label: 'menu.products',
     icon: 'fluent:box-24-regular',
     name: 'products',
-    to: '/products',
+    to: '/products/categories',
   },
   {
     label: 'menu.orders',

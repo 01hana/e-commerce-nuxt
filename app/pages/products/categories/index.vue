@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import DtHeader from './DtHeader.vue';
 import DtTable from './DtTable.vue';
-import FormModal from './FormModal.vue';
 
 provide(useModalKey, useModal());
-provide(DtUtils.key, new DtUtils(useProducts()));
+provide(DtUtils.key, new DtUtils(useCategories()));
 </script>
 
 <template>
@@ -14,9 +13,5 @@ provide(DtUtils.key, new DtUtils(useProducts()));
     </template>
 
     <DtTable />
-
-    <FormModal />
   </UCard>
 </template>
-
-<style scoped></style>

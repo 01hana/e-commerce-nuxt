@@ -20,10 +20,14 @@ const { t: tv } = usePageI18n();
 const { t } = useI18n();
 
 const radioItems = computed(() =>
-  genderOptions.map(({ id }) => ({
-    label: t(`form.gender.${id}`),
-    id,
-  })),
+  genderOptions.map(item => {
+    const value = (item as any).value ?? (item as any).id ?? (item as any).key;
+
+    return {
+      label: t(`form.gender.${value}`),
+      value,
+    };
+  }),
 );
 
 watch([show, id], async ([isShow, id]) => {
