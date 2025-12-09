@@ -141,4 +141,8 @@ export const userService = {
 
     return { deleted: ids };
   },
+
+  async actionBatch(ids: string[], status: boolean) {
+    return await userRepository.updateBatch(ids, { status });
+  },
 };

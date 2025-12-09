@@ -183,6 +183,42 @@ export class BaseRepository {
   }
 
   /**
+   *    批次更新
+   */
+  async updateBatch(ids: string[] | number[], data: Record<string, any>) {
+    if (!Array.isArray(ids) || ids.length === 0) {
+      throw appError(400, 'ids is required');
+    }
+
+    // 建立 SET 子句
+    const setParts = [];
+    const params: any[] = [];
+
+    for (const key in data) {
+      setParts.push(`${key} = ?`);
+      params.push(data[key]);
+    }
+
+    const setClause = setParts.join(', ');
+
+    // 處理 ID 條件
+    const idPlaceholders = ids.map(() => (this.useUUID ? 'UUID_TO_BIN(?, 1)' : '?')).join(',');
+
+    params.push(...ids);
+
+    const sql = `
+    UPDATE \`${this.table}\`
+    SET ${setClause}
+    WHERE id IN (${idPlaceholders})
+  `;
+
+    // 執行更新
+    await db.query(sql, params);
+
+    return { ids };
+  }
+
+  /**
    *  軟刪除
    */
   async softDelete(ids: string[] | number[]) {
