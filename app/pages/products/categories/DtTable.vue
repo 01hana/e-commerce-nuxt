@@ -4,7 +4,7 @@ import type { VxeTablePropTypes } from 'vxe-table';
 const {
   params,
   filters,
-  actionStatus,
+  actionBatch,
   manualHasEditStatus,
   manualEditRow,
   manualSaveRow,

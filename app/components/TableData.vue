@@ -25,6 +25,8 @@ const {
   remove,
 } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
 
+const { user } = useAuth();
+
 const { width, height } = useWindowSize();
 const { t } = useI18n();
 const {
@@ -116,6 +118,7 @@ async function onRemove() {
               />
 
               <UButton
+                v-if="user?.id !== row.id"
                 icon="fluent:delete-24-regular"
                 variant="ghost"
                 color="error"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { params, filters, actionStatus } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
+const { params, filters, actionBatch } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
 
 // onMounted(() => {
 //   const { getTable } = useProducts();

@@ -28,6 +28,10 @@ class UsersService {
   public remove = (data: Record<string, any>) => {
     return httpRequest.delete('users', data);
   };
+
+  public actions = (data: Record<string, any>) => {
+    return httpRequest.patch('users/batch', data);
+  };
 }
 
 export default new UsersService();

@@ -64,12 +64,12 @@ const batchItems = computed(() => {
       {
         label: t('actions.enable'),
         disabled: !isSelected.value,
-        onSelect: () => actionBatch('status', true),
+        onSelect: () => actionBatch(true),
       },
       {
         label: t('actions.disable'),
         disabled: !isSelected.value,
-        onSelect: () => actionBatch('status', false),
+        onSelect: () => actionBatch(false),
       },
     );
   }

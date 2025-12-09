@@ -1,18 +1,13 @@
 <script setup lang="ts">
 const { params, filters } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
 
-onMounted(() => {
-  const { getTable, getFilters } = useUsers();
+const { user } = useAuth();
+const { getTable, getFilters, actions } = useUsers();
 
+onMounted(() => {
   getTable(params.value);
   getFilters(['groups', 'status']);
 });
-
-function statusChange(id: string, value: boolean) {
-  const { set } = useUsers();
-
-  set(id, { status: value });
-}
 </script>
 
 <template>
@@ -42,7 +37,8 @@ function statusChange(id: string, value: boolean) {
           name="status"
           fieldType="switch"
           class="flex justify-center"
-          @change="statusChange(row.id, row.status)"
+          :disabled="user?.id === row.id"
+          @change="actions({ ids: [row.id], status: row.status })"
         />
       </template>
     </vxe-column>

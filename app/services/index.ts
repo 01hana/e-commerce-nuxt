@@ -1,6 +1,6 @@
 import { $fetch } from 'ofetch';
 
-type Methods = 'GET' | 'POST' | 'DELETE' | 'PUT';
+type Methods = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
 
 class HttpRequest {
   private getDefaultHeaders() {
@@ -62,6 +62,10 @@ class HttpRequest {
 
   public put<T = any>(url: string, data?: any, options?: any) {
     return this.request<T>(url, 'PUT', data, options);
+  }
+
+  public patch<T = any>(url: string, data?: any, options?: any) {
+    return this.request<T>(url, 'PATCH', data, options);
   }
 
   public delete<T = any>(url: string, data?: any, options?: any) {

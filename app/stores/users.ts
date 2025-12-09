@@ -48,6 +48,10 @@ export const useUsers = defineStore('users', () => {
     return await UsersService.remove(data);
   }
 
+  async function actions(data: Record<string, any>) {
+    await UsersService.actions(data);
+  }
+
   return {
     getTable,
     getFilters,
@@ -56,5 +60,6 @@ export const useUsers = defineStore('users', () => {
     create,
     set,
     remove,
+    actions,
   };
 });
