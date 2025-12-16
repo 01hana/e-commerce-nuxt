@@ -1,11 +1,18 @@
 <script setup lang="ts">
 const { params, filters, actionBatch } = inject(DtUtils.key) as InstanceType<typeof DtUtils>;
 
-// onMounted(() => {
-//   const { getTable } = useProducts();
+const route = useRoute();
+const { categoryId } = storeToRefs(useProducts());
 
-//   getTable(params.value);
-// });
+onMounted(() => {
+  const idParam = route.params.id;
+  const numericId = Array.isArray(idParam) ? Number(idParam[0]) : Number(idParam ?? 0);
+  categoryId.value = Number.isNaN(numericId) ? 0 : numericId;
+
+  const { getTable } = useProducts();
+
+  getTable(params.value);
+});
 </script>
 
 <template>
@@ -13,7 +20,7 @@ const { params, filters, actionBatch } = inject(DtUtils.key) as InstanceType<typ
     <vxe-column min-width="120" field="cover" title="封面圖" align="center">
       <template #default="{ row }">
         <div class="flex justify-center">
-          <vxe-image src="https://vxeui.com/resource/img/546.gif" height="50" />
+          <vxe-image :src="row.cover" height="50" />
         </div>
       </template>
     </vxe-column>
@@ -67,3 +74,10 @@ const { params, filters, actionBatch } = inject(DtUtils.key) as InstanceType<typ
     <vxe-column min-width="150" field="updated_at" title="最後更新時間" />
   </TableData>
 </template>
+
+<style scoped>
+:deep(.vxe-upload--image-list),
+:deep(.vxe-upload--image-more-list) {
+  justify-content: center;
+}
+</style>

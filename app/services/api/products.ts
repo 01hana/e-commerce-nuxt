@@ -1,32 +1,32 @@
 import httpRequest from '@/services/index';
 
 class ProductService {
-  public getTable = (params: Record<string, any>) => {
-    return httpRequest.post('products/getTable', params);
+  public getTable = (id: string | number, params: Record<string, any>) => {
+    return httpRequest.post(`products/categories/${id}/getTable`, params);
   };
 
   public getFilters = () => {
-    return httpRequest.get('products/filters');
+    return httpRequest.get('products/categories/filters');
   };
 
   public get = (id: string) => {
-    return httpRequest.get(`products/${id}`);
+    return httpRequest.get(`products/categories/${id}`);
   };
 
-  public create = (data: Record<string, any>) => {
-    return httpRequest.post('products', data, {
+  public create = (id: string | number, data: Record<string, any>) => {
+    return httpRequest.post(`products/categories/${id}`, data, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   };
 
-  public set = (id: string, data: Record<string, any>) => {
-    return httpRequest.put(`products/${id}`, data, {
+  public set = (id: string | number, data: Record<string, any>) => {
+    return httpRequest.put(`products/categories/${id}`, data, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   };
 
-  public remove = (data: Record<string, any>) => {
-    return httpRequest.delete('products', data);
+  public remove = (id: string | number, data: Record<string, any>) => {
+    return httpRequest.delete(`products/categories/${id}`, data);
   };
 }
 

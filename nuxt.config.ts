@@ -17,7 +17,15 @@ export default defineNuxtConfig({
   security: {
     headers: {
       contentSecurityPolicy: {
-        'img-src': ["'self'", 'data:', 'blob:', 'https://img.freepik.com', 'https://vxeui.com'],
+        'img-src': [
+          "'self'",
+          'data:',
+          'blob:',
+          'https://img.freepik.com',
+          'https://vxeui.com',
+          'https://picsum.photos',
+          'https://fastly.picsum.photos',
+        ],
       },
     },
   },
@@ -47,6 +55,7 @@ export default defineNuxtConfig({
   // },
   app: {
     baseURL: '/',
+    viewTransition: true,
   },
   i18n: {
     defaultLocale: 'zh-TW',
