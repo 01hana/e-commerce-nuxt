@@ -45,10 +45,8 @@ export const productService = {
     return row;
   },
 
-  async create(categoryId: string, data: any) {
-    const { name, sort, status } = data;
-
-    await productRepository.create({ name, sort, status });
+  async create(data: any) {
+    await productRepository.create(data);
   },
 
   async update(id: string | number, data: any) {

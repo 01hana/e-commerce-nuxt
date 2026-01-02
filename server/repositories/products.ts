@@ -13,8 +13,9 @@ class ProductRepository extends BaseRepository {
         'status',
         'stock',
         'price',
-        'cover',
+        'cover_url',
         'images',
+        'sort',
         'updated_at',
       ],
     );
@@ -29,6 +30,13 @@ class ProductRepository extends BaseRepository {
 
   public async create(data: any) {
     await this.checkUnique(data, ['name', 'number'], this.uniqueTranslate);
+
+    // images 必須 stringify
+    if (Array.isArray(data.images)) {
+      data.images = JSON.stringify(data.images);
+    } else if (!data.images) {
+      data.images = '[]';
+    }
 
     await this.insert(data);
   }

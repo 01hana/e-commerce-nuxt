@@ -34,6 +34,10 @@ export const categoryService = {
     return row;
   },
 
+  async getCategories() {
+    return await categoryRepository.getCategories();
+  },
+
   async create(data: any) {
     const { name, sort, status } = data;
 
